@@ -60,8 +60,10 @@ class App(Frame):
             raise TypeError('insert_image takes filename or image')
         if filename is not None:
             panel.set_img(Image.open(filename))
-        if image is not None:
+        elif image is not None:
             panel.set_img(image)
+        else:
+            raise TypeError
 
     def key(self):
         Key.generate_key()
@@ -79,6 +81,8 @@ class App(Frame):
                 self._key_img.image
             )
             self.insert_image(self._share_img, filename=Share.FILENAME)
+            # self.insert_image(self._share_img, image=share)
+            self._share = share
         else:
             raise ValueError('share can be made from key and timestamp')
 
@@ -93,7 +97,7 @@ class App(Frame):
             rgb_image = self._input_img.image.convert('RGB')
             wm = Marker.watermark(
                 rgb_image,
-                self._share_img.image
+                self._share
             )
             self.insert_image(self._watermark_img, filename=Marker.FILENAME)
         else:
